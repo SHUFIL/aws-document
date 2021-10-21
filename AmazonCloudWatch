@@ -1,0 +1,58 @@
+Craeate a role in IAM 
+
+CloudWatchAgentServerPolicy
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "ec2:DescribeVolumes",
+                "ec2:DescribeTags",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams",
+                "logs:DescribeLogGroups",
+                "logs:CreateLogStream",
+                "logs:CreateLogGroup"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:GetParameter"
+            ],
+            "Resource": "arn:aws:ssm:*:*:parameter/AmazonCloudWatch-*"
+        }
+    ]
+}
+
+1,Start Ec2 with above role 
+
+2,SSH into that system and install agent as per you OS using below link
+ https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-first-instance.html
+
+ Download the same using WGET like below 
+ wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
+
+3,Configure the aggent 
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+It shouls ask some details and we can get the out put as a json formate 
+
+
+4,start agent 
+
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
+
+5,Once started application we can confirmation at the same terminal with PID 
+
+6, After couple of time we can see the reflection in Cloud-watch Metrics , with the name of CWAgent,
+Select Instance name from there for getting graph and more details.
+
+7, Using this metrics we can create Alam using SNS(if we dont have , we can create new SNS with email ID) notification and set greater-than and equal value , If it is rechaed predifine metrics it should triger the alam and we will get email .
+
+
+
+
