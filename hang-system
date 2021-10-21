@@ -1,0 +1,18 @@
+1, Disk
+ Create a script file for fill disk space and run this command
+for i in {1..100}; do dd if=/dev/urandom bs=5084 count=50 of=test-${i}.bin; done 
+
+2, CPU
+ increase CPU uttiliasation using below script, you can increase value as per your server core or can use yes command per single core 
+
+for i in 1 2 3 4; do while : ; do : ; done & done
+ 
+yes > /dev/null &
+
+3, RAM
+ below python script will allocate some amound of data in to Memmory before exit 
+
+#!/usr/bin/python2
+import numpy
+result = [numpy.random.bytes(1024*1024) for x in xrange(1024)]
+print len(result)
